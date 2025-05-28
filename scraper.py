@@ -75,10 +75,17 @@ def get_linkz_url(movie_url):
 
 def get_quality_servers(linkz_url):
     log(f"Opening linkz.mom: {linkz_url}")
-    res = requests.get(linkz_url)
+    try:
+        res = requests.get(linkz_url, timeout=10)
+        res.raise_for_status()
+    except Exception as e:
+        log(f"❌ Error fetching linkz.mom page: {e}")
+        return []
+
     soup = BeautifulSoup(res.text, 'html.parser')
     container = soup.select_one('div.download-links-div')
     if not container:
+        log("❌ No .download-links-div found")
         return []
 
     qualities = []
@@ -94,7 +101,10 @@ def get_quality_servers(linkz_url):
                 servers.append((label, href))
         if servers:
             qualities.append((quality, servers))
+
+    log(f"✅ Found {len(qualities)} quality blocks.")
     return qualities
+
 
 def display_qualities(qualities):
     if not qualities:
