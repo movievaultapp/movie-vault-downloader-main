@@ -48,8 +48,8 @@ def details():
         qualities = get_quality_servers(linkz_url)
 
         # ✅ ADD THIS LOGGING TO DEBUG
-        print(f"[LOG] Extracted linkz.mom: {linkz_url}")
-        print(f"[LOG] Found qualities: {qualities}")
+        console.log(f"[LOG] Extracted linkz.mom: {linkz_url}")
+        console.log(f"[LOG] Found qualities: {qualities}")
 
         if not qualities:
             return render_template("error.html", error_message="No quality options found.")
