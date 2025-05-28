@@ -8,13 +8,25 @@ def log(msg):
     print("[LOG]", msg)
 
 def safe_request(url, timeout=15):
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/120.0.0.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Referer": "https://google.com",  # Optional: makes it look more human
+    }
+
     try:
-        res = requests.get(url, timeout=timeout)
+        res = requests.get(url, timeout=timeout, headers=headers)
         res.raise_for_status()
         return res
     except requests.exceptions.RequestException as e:
         print(f"[ERROR] Failed to fetch {url} — {e}")
         return None
+
 
 def get_search_results(query):
     search_url = f"https://movies4u.show/?s={query.replace(' ', '+')}"
