@@ -33,21 +33,33 @@ def details():
     result = get_linkz_url(selected_url)
 
     if isinstance(result, dict):
-        # Multiple seasons
+        # multiple seasons
         cache['seasons'] = result
         cache['title'] = selected_title
         return render_template("seasons.html", title=selected_title, seasons=list(result.keys()))
+
     elif isinstance(result, tuple):
         season, linkz_url = result
+        if not linkz_url:
+            return render_template("error.html", error_message="Could not extract link.")
+        
         cache['linkz_url'] = linkz_url
+        cache['title'] = selected_title
         qualities = get_quality_servers(linkz_url)
+
+        # ✅ ADD THIS LOGGING TO DEBUG
+        print(f"[LOG] Extracted linkz.mom: {linkz_url}")
+        print(f"[LOG] Found qualities: {qualities}")
+
         if not qualities:
             return render_template("error.html", error_message="No quality options found.")
+        
         cache['qualities'] = qualities
-        cache['title'] = selected_title
         return render_template("qualities.html", title=selected_title, qualities=qualities)
+
     else:
-        return render_template("error.html", error_message="No download links found.")
+        return render_template("error.html", error_message="No valid download links found.")
+
 
 @app.route('/select_season', methods=["POST"])
 def select_season():
