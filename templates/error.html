@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error - Movie Vault</title>
+    <style>
+        body {
+            background-color: #0f1621;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #1a2332;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            color: #3b82f6;
+        }
+        .content {
+            max-width: 800px;
+            margin: 20px 20px;
+            padding: 0 15px;
+            text-align: center;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        .back-button:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/4221/4221419.png" alt="Movie Vault Logo" style="height: 40px;">
+            <span style="font-size: 24px; color: #3b82f6;">Movie Vault</span>
+        </div>
+    </div>
+    <div class="content">
+        <h2>❌ Error</h2>
+        <p>{{ error_message }}</p>
+        <a href="/" class="back-button">Go Back to Search</a>
+    </div>
+</body>
+</html>

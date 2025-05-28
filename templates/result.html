@@ -1,0 +1,32 @@
+from flask import Flask, render_template, request
+from bs4 import BeautifulSoup
+import requests
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/get_link', methods=['POST'])
+def get_link():
+    parent_url = request.form['parent_url']
+    headers = {
+        "User-Agent": "Mozilla/5.0",
+        "Referer": "https://www.12filmyzilla.com/"
+    }
+    try:
+        response = requests.get(parent_url, headers=headers)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        a_tag = soup.find('a', class_='dwnLink')
+        if a_tag:
+            intermediate_url = a_tag['href']
+            return render_template('redirect.html', download_url=intermediate_url)
+        else:
+            return "Download link not found", 404
+    except Exception as e:
+        return f"Error: {e}", 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
+

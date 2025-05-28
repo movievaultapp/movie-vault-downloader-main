@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Link</title>
+    <script>
+        async function startDownload() {
+            const intermediate_url = "{{ download_url }}"; // The extracted URL to use as intermediate_url
+
+            try {
+                // Make a request to the Flask backend to get the final download link
+                const response = await fetch(`/start_download?url=${encodeURIComponent(intermediate_url)}`);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.final_url) {
+                        console.log("✅ Final Direct Download Link:", data.final_url);
+                        window.location.href = data.final_url; // Trigger download
+                    } else {
+                        console.error("❌ No redirect found:", data.error);
+                    }
+                } else {
+                    console.error("❌ Failed to fetch the download link:", response.status);
+                }
+            } catch (error) {
+                console.error("⚠️ Request failed:", error);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h3>Click the button to start your download</h3>
+    <button onclick="startDownload()">Start Download</button>
+</body>
+</html>
